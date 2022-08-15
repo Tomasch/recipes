@@ -1,0 +1,149 @@
+:toc: left
+
+= Recipes Archiver
+
+== Create a new recipe
+
+=== Example HTTP request
+
+include::{snippets}/post-request/http-request.adoc[]
+
+=== Request specification
+
+Passed as JSON object, updating the values of the recipe.
+
+include::{snippets}/recipes-input/request-fields.adoc[]
+
+=== Mandatory fields
+
+The only mandatory fields in this request is either `ingredients` or `instructions` fields filled in. Otherwise, recipe would be left out without any meaningful content.
+
+User can decide to update further details later.
+
+==== Validation errors
+
+User will be get a `400` response with proper validation message if `mealType` field is outside of domain values and when the `servingsNumber` will not be a numeric value.
+
+=== Response
+
+include::{snippets}/recipes-entity/response-fields.adoc[]
+
+==== Correct response
+
+include::{snippets}/post-request/http-response.adoc[]
+
+==== Incorrect response
+
+User will get `400` Bad Request in case any validation will fail.
+
+== Get recipe by ID
+
+=== Example HTTP request
+
+include::{snippets}/get-request/http-request.adoc[]
+
+==== Mandatory fields
+
+The only mandatory fields in this request is path variable defining ID or the recipe user wants to receive.
+
+==== Validation errors
+
+User will be get a `400` response with proper validation message if `mealType` field is outside of domain values and when the `servingsNumber` will not be a numeric value.
+
+=== Response
+
+JSON representing the recipe entity, containing full information from the DB.
+
+include::{snippets}/recipes-entity/response-fields.adoc[]
+
+== Search recipe by criteria
+
+User can search for a recipe with predefined filters allowing him to look for a recipe with or without the keyword inside it's `ingredients` or `instructions` field.
+
+=== Example HTTP request
+
+include::{snippets}/search-params/http-request.adoc[]
+
+=== Available search parameters
+
+Search parameters are given as `GET` request parameters. For simplicity all search criteria are treated as `and` conditions.
+
+include::{snippets}/search-params/request-parameters.adoc[]
+
+==== Validation errors
+
+User will be shown validation error in case search parameter is out of its domain values.
+
+If multiple conditions for `t` (meal type) or `serv` (servings number) are defined, the user will be shown validation error as it would yield no result at all.
+
+=== Response
+
+==== Correct response
+
+include::{snippets}/search-params/httpie-request.adoc[]
+
+==== Incorrect response
+
+User will get `400` Bad Request error when the search prarameters is outside of the expected values.
+
+==== Correct response
+
+JSON representing the recipe entity, containing full information from the DB.
+
+include::{snippets}/recipes-entity/response-fields.adoc[]
+
+==== Incorrect response
+
+User will get `400` Bad Request in case validation of serach params failed.
+
+== Update recipe by ID
+
+Lets user update the recipe with new values using it's `ID`.
+
+=== Example HTTP request
+
+include::{snippets}/update-request/http-request.adoc[]
+
+=== Request specification
+
+include::{snippets}/recipes-input/request-fields.adoc[]
+
+=== Mandatory fields
+
+The only mandatory fields in this request is either `ingredients` or `instructions` fields filled in. Otherwise, recipe would be left out without any meaningful content.
+
+==== Validation
+
+User will be notified if `mealType` field is outside of domain values or `servingNumber` is not a number.
+
+=== Response
+
+==== Correct response
+
+JSON representing the recipe entity, containing full information from the DB.
+
+include::{snippets}/recipes-entity/response-fields.adoc[]
+
+==== Incorrect response
+
+Server will return `400` Bad Request when any of the validations will fail.
+
+== Delete by ID
+
+Lets user delete the recipe by its ID.
+
+=== Example HTTP request
+
+include::{snippets}/delete-request/http-request.adoc[]
+
+=== Response
+
+==== Correct response
+
+include::{snippets}/delete-request/http-response.adoc[]
+
+==== Incorrect response
+
+User will not get a different response than a correct one. Removing nonexistent record will yield no different behavior.
+
+
